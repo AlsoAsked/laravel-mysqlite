@@ -5,9 +5,8 @@ namespace Mhorninger\MySQLite;
 class MethodRewriteConstants
 {
     const METHOD_REPLACEMENTS = [
-        '/(DATE_ADD)(?=.*?, INTERVAL.*?\\))/' => 'datetime',
-        '/INTERVAL (?=.*?\\))/' => '\'+',
-        '/INTERVAL (?=.*?\\))/' => '\'+',
+        '/DATE_SUB\\((.*?), INTERVAL (.*?)\\)/' => 'datetime(\1, \'-\2)',
+        '/DATE_ADD\\((.*?), INTERVAL (.*?)\\)/' => 'datetime(\1, \'+\2)',
         '/SECOND(?=\\))/' => 'seconds\'',
         '/MINUTE(?=\\))/' => 'minutes\'',
         '/HOUR(?=\\))/' => 'hours\'',
