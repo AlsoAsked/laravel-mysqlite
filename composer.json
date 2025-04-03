@@ -36,5 +36,5 @@
             "Mhorninger\\": "src/Mhorninger/"
         }
     },
-    "minimum-stability": "dev"
+    "minimum-stability": "stable"
 }
