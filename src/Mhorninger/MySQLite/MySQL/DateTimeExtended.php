@@ -122,6 +122,14 @@ trait DateTimeExtended
     public static function mysql_timestampdiff($timeUnit, $startTimeStamp, $endTimeStamp)
     {
         //phpcs:enable
+        if ($startTimeStamp !== null && \is_string($startTimeStamp)) {
+            $startTimeStamp = (new DateTime($startTimeStamp))->format('U.u');
+        }
+
+        if ($endTimeStamp !== null && \is_string($endTimeStamp)) {
+            $endTimeStamp = (new DateTime($endTimeStamp))->format('U.u');
+        }
+
         if ($startTimeStamp != null && is_numeric($startTimeStamp) && $endTimeStamp != null && is_numeric($endTimeStamp)) {
             $differenceInt = $endTimeStamp - $startTimeStamp;
             if ($timeUnit == SubstitutionConstants::SECOND) {

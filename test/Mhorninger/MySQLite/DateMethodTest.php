@@ -4,6 +4,7 @@ namespace Mhorninger\MySQLite;
 
 use DateInterval;
 use DateTime;
+use DateTimeInterface;
 
 class DateMethodTest extends \Mhorninger\TestCase
 {
@@ -155,6 +156,18 @@ class DateMethodTest extends \Mhorninger\TestCase
         $nowTimestamp = $now->format('U.u');
         $plusOneMicrosecondTimestamp = $plusOneMicrosecond->format('U.u');
         $query = "select TIMESTAMPDIFF(MICROSECOND, $nowTimestamp, $plusOneMicrosecondTimestamp) AS value";
+        $result = $this->conn->selectOne($query);
+        $this->assertEquals(1, $result->value);
+    }
+
+    public function testMysqlTimestampDiffMicrosecondFormatted()
+    {
+        $now = new DateTime();
+        $plusOneMicrosecond = clone $now;
+        $plusOneMicrosecond->setMicrosecond($plusOneMicrosecond->getMicrosecond() + 1);
+        $nowFormatted = $now->format('Y-m-d\TH:i:s.uP');
+        $plusOneMicrosecondFormatted = $plusOneMicrosecond->format('Y-m-d\TH:i:s.uP');
+        $query = "select TIMESTAMPDIFF(MICROSECOND, '$nowFormatted', '$plusOneMicrosecondFormatted') AS value";
         $result = $this->conn->selectOne($query);
         $this->assertEquals(1, $result->value);
     }
