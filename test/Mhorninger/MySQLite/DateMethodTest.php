@@ -147,6 +147,18 @@ class DateMethodTest extends \Mhorninger\TestCase
         $this->assertEquals(1, $result->value);
     }
 
+    public function testMysqlTimestampDiffMicrosecond()
+    {
+        $now = new DateTime();
+        $plusOneMicrosecond = clone $now;
+        $plusOneMicrosecond->setMicrosecond($plusOneMicrosecond->getMicrosecond() + 1);
+        $nowTimestamp = $now->format('U.u');
+        $plusOneMicrosecondTimestamp = $plusOneMicrosecond->format('U.u');
+        $query = "select TIMESTAMPDIFF(MICROSECOND, $nowTimestamp, $plusOneMicrosecondTimestamp) AS value";
+        $result = $this->conn->selectOne($query);
+        $this->assertEquals(1, $result->value);
+    }
+
     public function testGetUTCTimestamp()
     {
         $query = 'SELECT UTC_TIMESTAMP as value';

@@ -124,9 +124,20 @@ trait DateTimeExtended
         //phpcs:enable
         if ($startTimeStamp != null && is_numeric($startTimeStamp) && $endTimeStamp != null && is_numeric($endTimeStamp)) {
             $differenceInt = $endTimeStamp - $startTimeStamp;
-            if ($timeUnit == SubstitutionConstants::SECOND || $timeUnit = SubstitutionConstants::FRAC_SECOND) {
+            if ($timeUnit == SubstitutionConstants::SECOND) {
                 return $differenceInt;
             }
+            if ($timeUnit == SubstitutionConstants::MICROSECOND) {
+                // if we calculate the microseconds using the numerical difference of the timestamps
+                // we'll encounter floating point precision issues
+                // parsing the date as a microsecond-precision Unix timestamp, and then converting
+                // the value from fractional seconds to microseconds by formatting the date accordingly,
+                // we can avoid these issues
+                $difference = DateTime::createFromFormat('U.u', sprintf('%.6f', $differenceInt));
+
+                return ($difference->format('U') * 1000000) + $difference->format('u');
+            }
+
             $difference = new DateTime();
             $difference->setTimestamp($differenceInt);
 

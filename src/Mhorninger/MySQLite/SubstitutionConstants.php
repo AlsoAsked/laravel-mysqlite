@@ -4,7 +4,7 @@ namespace Mhorninger\MySQLite;
 
 class SubstitutionConstants
 {
-    const FRAC_SECOND = 'Tv';
+    const MICROSECOND = 'Tv';
     const SECOND = 'Ts';
     const MINUTE = 'Ti';
     const HOUR = 'TG';
